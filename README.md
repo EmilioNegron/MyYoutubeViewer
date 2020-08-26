@@ -13,7 +13,7 @@ The following components/features are used in this app:
 * The Room database to create an offline cache.
 * Using the repository Class to abstract an app's data layer from the rest of the app.
 * How to load cached data using a repository.
-* Use Workmanger Worker to update list of available videos, using Constraints to monitor Network avalibility, as well as device battery charging, and set to execute during device idleness at once a day intervals.
+* Use Workmanger Worker to update list of available videos, using Constraints to monitor Network availability, as well as device battery charging, and set to execute during device idleness at once a day intervals.
 * Navigation Destinations
 
 NOTE: I used an online tool called "My Json Server" ==>  "https://my-json-server.typicode.com/" to set up a Fake Online REST server for use in my app. You can find my "db.json" file entries at: https://github.com/EmilioNegron/demo
