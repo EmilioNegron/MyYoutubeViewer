@@ -19,6 +19,7 @@ package com.emilio.android.youtubeviewer.database
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.emilio.android.youtubeviewer.YoutubePlayerApplication
 
 @Dao
 interface VideoDao {
@@ -41,7 +42,7 @@ private lateinit var INSTANCE: VideosDatabase
 fun getDatabase(context: Context): VideosDatabase {
     synchronized(VideosDatabase::class.java) {
         if (!::INSTANCE.isInitialized) {
-            INSTANCE = Room.databaseBuilder(context.applicationContext,
+            INSTANCE = Room.databaseBuilder(context,
                     VideosDatabase::class.java,
                     "videos").build()
         }

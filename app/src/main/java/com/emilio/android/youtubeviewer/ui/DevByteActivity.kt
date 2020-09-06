@@ -34,4 +34,5 @@ class DevByteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dev_byte_viewer)
     }
+
 }

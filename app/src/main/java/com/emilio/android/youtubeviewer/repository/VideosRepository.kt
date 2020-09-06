@@ -22,7 +22,6 @@ import com.emilio.android.youtubeviewer.database.VideosDatabase
 import com.emilio.android.youtubeviewer.database.asDomainModel
 import com.emilio.android.youtubeviewer.domain.DevByteVideo
 import com.emilio.android.youtubeviewer.network.DevByteNetwork
-
 import com.emilio.android.youtubeviewer.network.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -31,9 +30,12 @@ import timber.log.Timber
 /**
  * Repository for fetching devbyte videos from the network and storing them on disk
  */
-class VideosRepository(private val database: VideosDatabase) {
+open class VideosRepository(private val database: VideosDatabase) {
 
-    val videos: LiveData<List<DevByteVideo>> = Transformations.map(database.videoDao.getVideos()) {
+    /**
+     * Collection of devbyte videos from our cache on disk, if available. Will be called from "refreshVideos()" below.
+     */
+    open val videos: LiveData<List<DevByteVideo>> = Transformations.map(database.videoDao.getVideos()) {
         it.asDomainModel()
     }
 
@@ -45,7 +47,7 @@ class VideosRepository(private val database: VideosDatabase) {
      * function is now safe to call from any thread including the Main thread.
      *
      */
-    suspend fun refreshVideos() {
+    open suspend fun refreshVideos() {
         withContext(Dispatchers.IO) {
             Timber.d("refresh videos is called");
             val playlist = DevByteNetwork.videos.getPlaylist()

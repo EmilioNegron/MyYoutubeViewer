@@ -27,7 +27,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.emilio.android.youtubeviewer.R
@@ -50,7 +50,7 @@ class DevByteFragment : Fragment() {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        ViewModelProviders.of(this, DevByteViewModel.Factory(activity.application))
+        ViewModelProvider(this, DevByteViewModel.Factory(activity.application))
                 .get(DevByteViewModel::class.java)
     }
 
@@ -92,7 +92,7 @@ class DevByteFragment : Fragment() {
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        var binding: FragmentDevByteBinding = DataBindingUtil.inflate(
+        val binding: FragmentDevByteBinding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.fragment_dev_byte,
                 container,
@@ -136,7 +136,7 @@ class DevByteFragment : Fragment() {
     /**
      * Method for displaying a Toast error message for network errors.
      */
-    private fun onNetworkError() {
+    fun onNetworkError() {
         if(!viewModel.isNetworkErrorShown.value!!) {
             Toast.makeText(activity, "Network Error", Toast.LENGTH_LONG).show()
             viewModel.onNetworkErrorShown()

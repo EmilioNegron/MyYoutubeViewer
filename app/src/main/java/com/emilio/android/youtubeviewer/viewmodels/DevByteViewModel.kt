@@ -17,12 +17,9 @@
 package com.emilio.android.youtubeviewer.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.emilio.android.youtubeviewer.database.getDatabase
+import com.emilio.android.youtubeviewer.domain.DevByteVideo
 import com.emilio.android.youtubeviewer.repository.VideosRepository
 import kotlinx.coroutines.*
 import java.io.IOException
@@ -37,7 +34,7 @@ import java.io.IOException
  * reference to applications across rotation since Application is never recreated during actiivty
  * or fragment lifecycle events.
  */
-class DevByteViewModel(application: Application) : AndroidViewModel(application) {
+open class DevByteViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * The data source this ViewModel will fetch results from.
      */
@@ -47,6 +44,18 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
      * A playlist of videos displayed on the screen.
      */
     val playlist = videosRepository.videos
+
+    /**
+     * Called from "DevByteViewModelTest"
+     */
+    open val myVideos: LiveData<List<DevByteVideo>> = Transformations.map(videosRepository.videos)  { playlist ->
+        if (playlist.isNullOrEmpty()) {
+            refreshDataFromRepository()
+        } else {
+            _eventNetworkError.value = true
+        }
+        return@map playlist
+    }
 
     /**
      * This is the job for all coroutines started by this ViewModel.
@@ -91,19 +100,22 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
 
     /**
      * init{} is called immediately when this ViewModel is created.
+     * Method "refreshDataFromRepository()" is prefixed as 'open' to allow for access
+     * from JUnit test.
      */
     init {
+        // Please read Description above.
         refreshDataFromRepository()
     }
 
     /**
      * Refresh data from the repository. Use a coroutine launch to run in a
-     * background thread.
+     * background thread. This Method is prefixed as 'open' to allow for access
+     * from JUnit test.
      */
-    private fun refreshDataFromRepository() {
+    open fun refreshDataFromRepository() {
         viewModelScope.launch {
-            try {
-                videosRepository.refreshVideos()
+            try {videosRepository.refreshVideos()
                 _eventNetworkError.value = false
                 _isNetworkErrorShown.value = false
 
@@ -115,14 +127,12 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-
     /**
      * Resets the network error flag.
      */
     fun onNetworkErrorShown() {
         _isNetworkErrorShown.value = true
     }
-
 
     /**
      * Cancel all coroutines when the ViewModel is cleared
@@ -143,5 +153,12 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }
+    }
+
+    open fun isPlaylistEmpty() : Boolean? {
+        if (playlist.value.isNullOrEmpty()) {
+            _eventNetworkError.value = true
+        }
+        return eventNetworkError.value
     }
 }

@@ -41,7 +41,6 @@ interface DevbyteService {
 object DevByteNetwork {
 
     // Configure retrofit to parse JSON and use coroutines
-    // Original : "https://android-kotlin-fun-mars-server.appspot.com/"
     private val retrofit = Retrofit.Builder()
             .baseUrl("https://my-json-server.typicode.com/EmilioNegron/demo/")
             .addConverterFactory(MoshiConverterFactory.create())

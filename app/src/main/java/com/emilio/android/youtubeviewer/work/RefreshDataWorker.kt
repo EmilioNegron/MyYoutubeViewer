@@ -16,9 +16,12 @@
 
 package com.emilio.android.youtubeviewer.work
 
+import android.app.Application
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.emilio.android.youtubeviewer.YoutubePlayerApplication
+import com.emilio.android.youtubeviewer.database.VideosDatabase
 import com.emilio.android.youtubeviewer.database.getDatabase
 import com.emilio.android.youtubeviewer.repository.VideosRepository
 import retrofit2.HttpException
@@ -31,16 +34,16 @@ class RefreshDataWorker(appContext: Context, params: WorkerParameters) :
         const val WORK_NAME = "com.emilio.android.youtubeviewer.work.RefreshDataWorker"
     }
     override suspend fun doWork(): Result {
-        val database = getDatabase(applicationContext)
+
+        val database = getDatabase(this.applicationContext)
         val repository = VideosRepository(database)
 
         try {
             repository.refreshVideos( )
-            Timber.d("WorkManager: Work request for sync is run")
+            Timber.d("### WorkManager ###: Work request for sync has executed!")
         } catch (e: HttpException) {
             return Result.retry()
         }
-
         return Result.success()
     }
 }

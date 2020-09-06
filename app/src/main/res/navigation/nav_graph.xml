@@ -19,11 +19,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/devByte">
+    app:startDestination="@id/helloFragment">
 
     <fragment
         android:id="@+id/devByte"
         android:name="com.emilio.android.youtubeviewer.ui.DevByteFragment"
         android:label="fragment_dev_byte"
-        tools:layout="@layout/fragment_dev_byte" />
+        tools:layout="@layout/fragment_dev_byte" >
+        <action
+            android:id="@+id/action_devByte_to_helloFragment"
+            app:destination="@id/helloFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/helloFragment"
+        android:name="com.emilio.android.youtubeviewer.ui.HelloFragment"
+        android:label="fragment_hello"
+        tools:layout="@layout/fragment_hello" >
+        <action
+            android:id="@+id/action_helloFragment_to_devByte"
+            app:destination="@id/devByte" />
+    </fragment>
 </navigation>

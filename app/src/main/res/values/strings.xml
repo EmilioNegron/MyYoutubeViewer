@@ -16,4 +16,9 @@
 
 <resources>
     <string name="app_name">My Favorite Youtube videos</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome">Welcome to My Youtube Viewer!</string>
+    <string name="your_options">What Are Your Favorite C8 Options?!</string>
+    <string name="go">Go!</string>
 </resources>
