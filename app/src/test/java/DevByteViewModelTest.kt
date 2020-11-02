@@ -1,11 +1,10 @@
 
+import android.os.Build
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.work.Operation
 import com.emilio.android.youtubeviewer.YoutubePlayerApplication
 import com.emilio.android.youtubeviewer.domain.DevByteVideo
 import com.emilio.android.youtubeviewer.repository.VideosRepository
-import com.emilio.android.youtubeviewer.ui.DevByteFragment
 import com.emilio.android.youtubeviewer.viewmodels.DevByteViewModel
 import junit.framework.Assert.*
 import kotlinx.coroutines.*
@@ -25,12 +24,12 @@ import org.mockito.Spy
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.io.IOException
-import java.lang.Thread.sleep
-
 
 class DevByteViewModelTest {
     @RunWith(RobolectricTestRunner::class)
+    @Config(sdk = [Build.VERSION_CODES.P])
     class DevByteViewModelTest {
         @ExperimentalCoroutinesApi
         private val testDispatcher = TestCoroutineDispatcher()
@@ -72,7 +71,7 @@ class DevByteViewModelTest {
             // All consecutive usages of [Dispatchers.Main] will use given [dispatcher] under the hood.
             Dispatchers.setMain(testDispatcher)
 
-            `when`(repo.videos).thenReturn(videoListLiveData)
+            //`when`(repo.videos).thenReturn(videoListLiveData)
             viewModel = DevByteViewModel(application)
 
             eventNetworkError = viewModel.eventNetworkError
