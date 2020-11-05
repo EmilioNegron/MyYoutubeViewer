@@ -19,15 +19,18 @@ package com.emilio.android.youtubeviewer.database
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.emilio.android.youtubeviewer.YoutubePlayerApplication
+import com.emilio.android.youtubeviewer.network.NetworkVideoContainer
 
 @Dao
 interface VideoDao {
     @Query("select * from databasevideo")
     fun getVideos(): LiveData<List<DatabaseVideo>>
 
+    @Query("DELETE FROM databasevideo")
+    fun deleteAllFromTable()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll( videos: List<DatabaseVideo>)
+    fun insertAll(videos: List<DatabaseVideo>)
 }
 
 

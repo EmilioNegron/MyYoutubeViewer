@@ -85,6 +85,7 @@ open class DevByteViewModel(application: Application) : AndroidViewModel(applica
     val eventNetworkError: LiveData<Boolean>
         get() = _eventNetworkError
 
+
     /**
      * Flag to display the error message. This is private to avoid exposing a
      * way to set this value to observers.
@@ -156,6 +157,7 @@ open class DevByteViewModel(application: Application) : AndroidViewModel(applica
     }
 
     open fun isPlaylistEmpty() : Boolean? {
+        _eventNetworkError.value = false
         if (playlist.value.isNullOrEmpty()) {
             _eventNetworkError.value = true
         }
